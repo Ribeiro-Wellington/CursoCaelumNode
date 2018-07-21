@@ -8,4 +8,3 @@ module.exports = {
     "DB_USER": process.env.DB_USER || 'root',
     "DB_PASSWORD": process.env.DB_PASSWORD || ''
 }
-//teste github
