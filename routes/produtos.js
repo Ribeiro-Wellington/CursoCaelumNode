@@ -1,18 +1,40 @@
-var createConnection = require("../db/connectionFactory")
+// Singleton
+var connectionFactory = require('../db/connectionFactory')
 
-module.exports = function (server){
-    server.get("/produtos", function trataPedidos(request, resposta){
-        var conexao = createConnection.getConnection()
-        
-        conexao.query('SELECT * FROM LIVROS', function processaResultados(erro, livros){
-            if(!erro){
-                resposta.render("produtos/lista.ejs", {
-                    livros: livros 
-                })      
+function pegaLivros(conexao){
+    return new Promise(function(resolve, reject){
+        conexao.query('SELECT * from livros', function(err, livros){
+            if(!err){
+                resolve(livros)
             } else {
-                resposta.send(erro)
+                reject(err)
             }
-            conexao.end();
         })
+    })
+}
+
+module.exports = function (server){    
+    server.get("/produtos", async function(request, resposta){
+        // connectionFactory.getConnection()
+        //     .then(function(conexao){
+        //         return pegaLivros(conexao)
+        //     })
+        //     .then(function(livros){
+        //         resposta.render("produtos/lista.ejs", {
+        //             livros: livros
+        //         })
+        //     })
+        //     .catch(function(erro){
+        //         resposta.send(erro.message)
+        //     })
+        try {
+            var conexao = await connectionFactory.getConnection()
+            var livros = await pegaLivros(conexao)
+            resposta.render("produtos/lista.ejs", {
+                livros: livros
+            })
+        } catch (erro){
+            resposta.send(erro.message)
+        }
     })
 }

@@ -1,7 +1,7 @@
 {
     "scripts": {
-        "start": "node Main.js",
-        "start-dev": "nodemon Main.js"
+        "start": "node main.js",
+        "start-dev": "nodemon main.js"
     },
     "dependencies": {
         "dotenv": "^6.0.0",
@@ -10,6 +10,6 @@
         "mysql": "^2.16.0"
     },
     "devDependencies": {
-        "nodemon": "^1.18.2"
+        "nodemon": "^1.18.3"
     }
 }
